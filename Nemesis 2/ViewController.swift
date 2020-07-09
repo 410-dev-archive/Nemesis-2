@@ -153,8 +153,13 @@ class ViewController: NSViewController {
         }else if NSSwiftUtils.doesTheFileExist(at: flagData + "suspended") {
             isKISImg()
             StatusLabel.stringValue = "Resuming LanSchool"
-            NSSwiftUtils.executeShellScript("killall", "-CONT", "LanSchool")
-            NSSwiftUtils.executeShellScript("killall", "-CONT", "student")
+            let listOfSuspendProc = NSSwiftUtils.readContents(of: patchData + "suspendList").components(separatedBy: "\n")
+            for i in 0..<listOfSuspendProc.count {
+                if listOfSuspendProc[i].elementsEqual("") {
+                    break
+                }
+                NSSwiftUtils.executeShellScript("killall", "-CONT", listOfSuspendProc[i])
+            }
             NSSwiftUtils.executeShellScript("rm", "-f", flagData + "suspended")
             endOfProcess()
         }else if AdminPasswordField.stringValue.count == 0 {
@@ -251,8 +256,13 @@ class ViewController: NSViewController {
             Graphics.messageBox_dialogue(title: "Error", contents: "LanSchool is already suspended.")
         }else{
             StatusLabel.stringValue = "Suspending LanSchool"
-            NSSwiftUtils.executeShellScript("killall", "-STOP", "LanSchool")
-            NSSwiftUtils.executeShellScript("killall", "-STOP", "student")
+            let listOfSuspendProc = NSSwiftUtils.readContents(of: patchData + "suspendList").components(separatedBy: "\n")
+            for i in 0..<listOfSuspendProc.count {
+                if listOfSuspendProc[i].elementsEqual("") {
+                    break
+                }
+                NSSwiftUtils.executeShellScript("killall", "-STOP", listOfSuspendProc[i])
+            }
             StatusLabel.stringValue = "Writing Flag"
             NSSwiftUtils.executeShellScript("touch", flagData + "suspended")
             NSSwiftUtils.executeShellScript("rm", "-f", flagData + "stopped")
