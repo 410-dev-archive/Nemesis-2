@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C3002B0224B6CEF700E31902 /* validator in Resources */ = {isa = PBXBuildFile; fileRef = C3002B0124B6CEF700E31902 /* validator */; };
 		C30BF2FC24B20B010058B14F /* logo.png in Resources */ = {isa = PBXBuildFile; fileRef = C30BF2FB24B20B010058B14F /* logo.png */; };
 		C30BF30924B214B10058B14F /* patchd in Resources */ = {isa = PBXBuildFile; fileRef = C30BF30824B214B10058B14F /* patchd */; };
 		C31BAC4524B2026C00EDF502 /* wallpaper.png in Resources */ = {isa = PBXBuildFile; fileRef = C31BAC4424B2026C00EDF502 /* wallpaper.png */; };
@@ -38,6 +39,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		C3002B0124B6CEF700E31902 /* validator */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = validator; sourceTree = "<group>"; };
 		C30BF2FB24B20B010058B14F /* logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = logo.png; sourceTree = "<group>"; };
 		C30BF30824B214B10058B14F /* patchd */ = {isa = PBXFileReference; lastKnownFileType = folder; path = patchd; sourceTree = "<group>"; };
 		C31BAC4424B2026C00EDF502 /* wallpaper.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = wallpaper.png; sourceTree = "<group>"; };
@@ -93,6 +95,7 @@
 				C3AA2DC324B1FF33007DBD22 /* Nemesis 2Tests */,
 				C3AA2DCE24B1FF33007DBD22 /* Nemesis 2UITests */,
 				C3AA2DAF24B1FF32007DBD22 /* Products */,
+				C3002B0124B6CEF700E31902 /* validator */,
 			);
 			sourceTree = "<group>";
 		};
@@ -244,6 +247,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C30BF30924B214B10058B14F /* patchd in Resources */,
+				C3002B0224B6CEF700E31902 /* validator in Resources */,
 				C30BF2FC24B20B010058B14F /* logo.png in Resources */,
 				C31BAC4524B2026C00EDF502 /* wallpaper.png in Resources */,
 				C3AA2DB624B1FF32007DBD22 /* Assets.xcassets in Resources */,

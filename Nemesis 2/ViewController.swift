@@ -10,7 +10,7 @@ import Cocoa
 
 class ViewController: NSViewController {
     
-    static let patchDataUpdateURL = ""
+    static let patchDataUpdateURL = "https://github.com/410-dev/Nemesis-2/raw/master/patchd.zip"
     static let compatible = "package_compatibility=nemesis2-1"
     let patchData = Bundle.main.resourcePath! + "/patchd/"
     let flagData = NSSwiftUtils.getHomeDirectory() + "Library/Application Support/Nemesis2/"
@@ -267,8 +267,9 @@ class ViewController: NSViewController {
     
     public static func updatePatchData() {
         let Graphics: GraphicComponents = GraphicComponents()
-        NSSwiftUtils.executeShellScript("curl", "-Ls", patchDataUpdateURL, "-o", "/tmp/mempatch.zip")
-        if NSSwiftUtils.readContents(of: "/tmp/mempatch.zip").contains(compatible) {
+        NSSwiftUtils.executeShellScript(Bundle.main.resourcePath! + "/patchd/updatedl", patchDataUpdateURL, "/tmp/mempatch.zip")
+        NSSwiftUtils.executeShellScript(Bundle.main.resourcePath! + "/validator", "/tmp/mempatch.zip", compatible, "/tmp/val")
+        if NSSwiftUtils.readContents(of: "/tmp/val").contains("Binary file (standard input) matches") {
             NSSwiftUtils.executeShellScript("mkdir", "-p", "/tmp/patchd")
             NSSwiftUtils.executeShellScript("unzip", "-q", "/tmp/mempatch.zip", "-d", "/tmp/patchd")
             if NSSwiftUtils.readContents(of: "/tmp/patchd/updatedDate").elementsEqual(NSSwiftUtils.readContents(of: Bundle.main.resourcePath! + "/patchd/updatedDate")) {
