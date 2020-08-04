@@ -113,7 +113,7 @@ class ViewController: NSViewController {
             if !NSSwiftUtils.readContents(of: patchData + "rlaunchagentlist").replacingOccurrences(of: "\n", with: "").elementsEqual("") {
                 let listOfLaunchAgents = NSSwiftUtils.readContents(of: patchData + "rlaunchagentlist").components(separatedBy: "\n")
                 for i in 0..<listOfLaunchAgents.count {
-                    NSSwiftUtils.executeShellScriptWithRootPrivilages(pass: AdminPasswordField.stringValue, "launchctl#load#" + listOfLaunchAgents[i])
+                    NSSwiftUtils.executeShellScriptWithRootPrivilages(pass: AdminPasswordField.stringValue, "launchctl#load#-w#" + listOfLaunchAgents[i])
                 }
             }
             
@@ -122,7 +122,7 @@ class ViewController: NSViewController {
             if !NSSwiftUtils.readContents(of: patchData + "launchagentlist").replacingOccurrences(of: "\n", with: "").elementsEqual("") {
                 let listOfULaunchAgents = NSSwiftUtils.readContents(of: patchData + "launchagentlist").components(separatedBy: "\n")
                 for i in 0..<listOfULaunchAgents.count {
-                    NSSwiftUtils.executeShellScript("launchctl", "load", listOfULaunchAgents[i])
+                    NSSwiftUtils.executeShellScript("launchctl", "load", "-w",listOfULaunchAgents[i])
                 }
             }
             
@@ -201,7 +201,7 @@ class ViewController: NSViewController {
             if !NSSwiftUtils.readContents(of: patchData + "rlaunchagentlist").replacingOccurrences(of: "\n", with: "").elementsEqual("") {
                 let listOfLaunchAgents = NSSwiftUtils.readContents(of: patchData + "rlaunchagentlist").components(separatedBy: "\n")
                 for i in 0..<listOfLaunchAgents.count {
-                    NSSwiftUtils.executeShellScriptWithRootPrivilages(pass: AdminPasswordField.stringValue, "launchctl#unload#" + listOfLaunchAgents[i])
+                    NSSwiftUtils.executeShellScriptWithRootPrivilages(pass: AdminPasswordField.stringValue, "launchctl#unload#-w#" + listOfLaunchAgents[i])
                 }
             }
             
@@ -210,7 +210,7 @@ class ViewController: NSViewController {
             if !NSSwiftUtils.readContents(of: patchData + "launchagentlist").replacingOccurrences(of: "\n", with: "").elementsEqual("") {
                 let listOfULaunchAgents = NSSwiftUtils.readContents(of: patchData + "launchagentlist").components(separatedBy: "\n")
                 for i in 0..<listOfULaunchAgents.count {
-                    NSSwiftUtils.executeShellScript("launchctl", "unload", listOfULaunchAgents[i])
+                    NSSwiftUtils.executeShellScript("launchctl", "unload", "-w", listOfULaunchAgents[i])
                 }
             }
             
