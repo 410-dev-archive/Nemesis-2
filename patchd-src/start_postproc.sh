@@ -1,9 +1,15 @@
 #!/bin/bash
-open "/Library/Application Support/LanSchool/student.app"
-open "/Library/Application Support/LanSchool/LanSchool.app"
+
 sleep 1
-if [[ ! -z "$(ps -ax | grep studen[t] )" ]] && [[ ! -z "$(ps -ax | grep LanSchoo[l] )" ]]; then
+if [[ ! -z "$(ps -ax | grep "Relay Classroo[m]")" ]]; then
 	echo "success" > "$2"
 else
-	echo "ERROR-01: Failed relaunching student.app or LanSchool.app" > "$2"
+	open "/Applications/Relay Classroom.app"
+	if [[ ! -z "$(ps -ax | grep "Relay Classroo[m]")" ]]; then
+		echo "ERROR-01: Failed relaunching Relay Classroom.app" > "$2"
+		echo "success" > "$2"
+	else
+		echo "Relay Classroom launching failed." > "$2"
+	fi
 fi
+exit 0

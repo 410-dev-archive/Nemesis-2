@@ -11,9 +11,11 @@ import Cocoa
 class ViewController: NSViewController {
     
     static let patchDataUpdateURL = "https://github.com/410-dev/Nemesis-2/raw/master/patchd.zip"
-    static let compatible = "package_compatibility=nemesis2-1"
+    static let compatible = "package_compatibility=nemesis2-2"
     let patchData = Bundle.main.resourcePath! + "/patchd/"
     let flagData = NSSwiftUtils.getHomeDirectory() + "Library/Application Support/Nemesis2/"
+    
+    let PROGRAM_NAME = "Relay Classroom"
     
     let Graphics: GraphicComponents = GraphicComponents()
     
@@ -54,7 +56,7 @@ class ViewController: NSViewController {
             }
         }
         if !LSExistInAnyform {
-            Graphics.messageBox_errorMessage(title: "Error", contents: "LanSchool not found. The app will quit now.")
+            Graphics.messageBox_errorMessage(title: "Error", contents: PROGRAM_NAME + " not found. The app will quit now.")
             exit(0)
         }
     }
@@ -122,7 +124,7 @@ class ViewController: NSViewController {
             if !NSSwiftUtils.readContents(of: patchData + "launchagentlist").replacingOccurrences(of: "\n", with: "").elementsEqual("") {
                 let listOfULaunchAgents = NSSwiftUtils.readContents(of: patchData + "launchagentlist").components(separatedBy: "\n")
                 for i in 0..<listOfULaunchAgents.count {
-                    NSSwiftUtils.executeShellScript("launchctl", "load", "-w",listOfULaunchAgents[i])
+                    NSSwiftUtils.executeShellScript("launchctl", "load", "-w", listOfULaunchAgents[i])
                 }
             }
             
@@ -146,13 +148,13 @@ class ViewController: NSViewController {
                 NSSwiftUtils.executeShellScript("touch", flagData + "started")
                 NSSwiftUtils.executeShellScript("rm", "-f", flagData + "stopped")
             }else{
-                Graphics.messageBox_errorMessage(title: "Error", contents: "LanSchool Kickstart process failed. Subprocess returned: " + NSSwiftUtils.readContents(of: "/tmp/nemesis_exitd") + "\nPlease try again after updating patch data.")
+                Graphics.messageBox_errorMessage(title: "Error", contents: PROGRAM_NAME + " Kickstart process failed. Subprocess returned: " + NSSwiftUtils.readContents(of: "/tmp/nemesis_exitd") + "\nPlease try again after updating patch data.")
             }
             // Re-Enable interaction
             endOfProcess()
         }else if NSSwiftUtils.doesTheFileExist(at: flagData + "suspended") {
             isKISImg()
-            StatusLabel.stringValue = "Resuming LanSchool"
+            StatusLabel.stringValue = "Resuming " + PROGRAM_NAME
             let listOfSuspendProc = NSSwiftUtils.readContents(of: patchData + "suspendList").components(separatedBy: "\n")
             for i in 0..<listOfSuspendProc.count {
                 if listOfSuspendProc[i].elementsEqual("") {
@@ -170,7 +172,7 @@ class ViewController: NSViewController {
             Graphics.messageBox_errorMessage(title: "Error", contents: "Administrator password is incorrect. Try again.")
         }else{
             isKISImg()
-            Graphics.messageBox_errorMessage(title: "Error", contents: "It seems LanSchool is already up and running.")
+            Graphics.messageBox_errorMessage(title: "Error", contents: "It seems \(PROGRAM_NAME) is already up and running.")
         }
     }
     
@@ -234,7 +236,7 @@ class ViewController: NSViewController {
                 NSSwiftUtils.executeShellScript("touch", flagData + "stopped")
                 NSSwiftUtils.executeShellScript("rm", "-f", flagData + "started")
             }else{
-                Graphics.messageBox_errorMessage(title: "Error", contents: "LanSchool terminate process failed. Subprocess returned: " + NSSwiftUtils.readContents(of: "/tmp/nemesis_exitd") + "\nPlease try again after updating patch data.")
+                Graphics.messageBox_errorMessage(title: "Error", contents: PROGRAM_NAME + " terminate process failed. Subprocess returned: " + NSSwiftUtils.readContents(of: "/tmp/nemesis_exitd") + "\nPlease try again after updating patch data.")
             }
             // Re-Enable interaction
             endOfProcess()
@@ -246,16 +248,16 @@ class ViewController: NSViewController {
             Graphics.messageBox_errorMessage(title: "Error", contents: "Administrator password is incorrect. Try again.")
         }else{
             isKISImg()
-            Graphics.messageBox_errorMessage(title: "Error", contents: "It seems LanSchool is already stopped.")
+            Graphics.messageBox_errorMessage(title: "Error", contents: "It seems \(PROGRAM_NAME) is already stopped.")
         }
     }
     
     @IBAction func OnSuspendPressed(_ sender: Any) {
         isKISImg()
         if NSSwiftUtils.doesTheFileExist(at: flagData + "suspended") {
-            Graphics.messageBox_dialogue(title: "Error", contents: "LanSchool is already suspended.")
+            Graphics.messageBox_errorMessage(title: "Error", contents: PROGRAM_NAME + " is already suspended. Please press start button to resume.")
         }else{
-            StatusLabel.stringValue = "Suspending LanSchool"
+            StatusLabel.stringValue = "Suspending " + PROGRAM_NAME
             let listOfSuspendProc = NSSwiftUtils.readContents(of: patchData + "suspendList").components(separatedBy: "\n")
             for i in 0..<listOfSuspendProc.count {
                 if listOfSuspendProc[i].elementsEqual("") {
