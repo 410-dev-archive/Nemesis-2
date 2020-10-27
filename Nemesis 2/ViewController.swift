@@ -73,9 +73,9 @@ class ViewController: NSViewController {
     func startProcess() {
         
         // Comment this code if testing is done
-        if !Graphics.messageBox_warning(title: "Beta", contents: "This version is a test version, therefore it may not be stable. This will (probably) not harm the system. Would you continue?") {
-           exit(0)
-        }
+//        if !Graphics.messageBox_warning(title: "Beta", contents: "This version is a test version, therefore it may not be stable. This will (probably) not harm the system. Would you continue?") {
+//           exit(0)
+//        }
         
         
         Graphics.messageBox_dialogue(title: "Do Not Quit", contents: "Please do not quit the application. Quitting app while on-going process may break the system.")
