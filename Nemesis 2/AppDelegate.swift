@@ -12,7 +12,7 @@ import Cocoa
 class AppDelegate: NSObject, NSApplicationDelegate {
     
     @IBAction func OnPatchUpdate(_ sender: Any) {
-        ViewController.updatePatchData()
+        ViewController.updatePatchData(doShowDialog: true)
     }
     
     func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {

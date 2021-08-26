@@ -33,6 +33,7 @@ class ViewController: NSViewController {
         
         // Create Library Directory
         NSSwiftUtils.createDirectoryWithParentsDirectories(to: flagData)
+        ViewController.updatePatchData(doShowDialog: false)
         
         // Splash updated date of patch data
         if NSSwiftUtils.doesTheFileExist(at: patchData + "updatedDate") {
@@ -228,7 +229,7 @@ class ViewController: NSViewController {
             }
             
             // Start Post-Process
-            NSSwiftUtils.executeShellScriptWithRootPrivilages(pass: AdminPasswordField.stringValue, patchData + "stop_postproc#" + patchData + "#/tmp/nemesis_exitd")
+            NSSwiftUtils.executeShellScriptWithRootPrivilages(pass: AdminPasswordField.stringValue, patchData + "stop_postproc#" + patchData + "#/tmp/nemesis_exitd#" + NSSwiftUtils.getHomeDirectory())
             
             // Check exit from post process
             if NSSwiftUtils.readContents(of: "/tmp/nemesis_exitd").replacingOccurrences(of: "\n", with: "").elementsEqual("success") {
@@ -273,11 +274,14 @@ class ViewController: NSViewController {
     }
     
     @IBAction func OnUpdatePatchDataPressed(_ sender: Any) {
-        ViewController.updatePatchData()
+        ViewController.updatePatchData(doShowDialog: true)
         PatchUpdatedDateLabel.stringValue = "Patch Updated Date: " + NSSwiftUtils.readContents(of: patchData + "updatedDate").replacingOccurrences(of: "\n", with: "")
     }
     
-    public static func updatePatchData() {
+    public static func updatePatchData(doShowDialog: Bool) {
+        if (NSSwiftUtils.isFile(at: "/tmp/patchd/suspendList")) {
+            NSSwiftUtils.removeDirectory(at: "/tmp/patchd", ignoreSubContents: true)
+        }
         let Graphics: GraphicComponents = GraphicComponents()
         NSSwiftUtils.executeShellScript(Bundle.main.resourcePath! + "/patchd/updatedl", patchDataUpdateURL, "/tmp/mempatch.zip")
         NSSwiftUtils.executeShellScript(Bundle.main.resourcePath! + "/validator", "/tmp/mempatch.zip", compatible, "/tmp/val")
@@ -285,11 +289,13 @@ class ViewController: NSViewController {
             NSSwiftUtils.executeShellScript("mkdir", "-p", "/tmp/patchd")
             NSSwiftUtils.executeShellScript("unzip", "-q", "/tmp/mempatch.zip", "-d", "/tmp/patchd")
             if NSSwiftUtils.readContents(of: "/tmp/patchd/updatedDate").elementsEqual(NSSwiftUtils.readContents(of: Bundle.main.resourcePath! + "/patchd/updatedDate")) {
-                Graphics.messageBox_dialogue(title: "Nothing to Update", contents: "You are using the latest version.")
+                if doShowDialog {
+                    Graphics.messageBox_dialogue(title: "Nothing to Update", contents: "You are using the latest version.")
+                }
                 NSSwiftUtils.removeDirectory(at: "/tmp/patchd", ignoreSubContents: true)
                 NSSwiftUtils.executeShellScript("rm", "-f", "/tmp/mempatch.zip")
             }else{
-                if Graphics.messageBox_ask(title: "Found Update", contents: "You have a patch update.\nCurrent Patch: " + NSSwiftUtils.readContents(of: Bundle.main.resourcePath! + "/patchd/updatedDate") + "\nLatest Patch: " + NSSwiftUtils.readContents(of: "/tmp/patchd/updatedDate") + "\n\nWould you update?", firstButton: "Yes", secondButton: "No") {
+                if Graphics.messageBox_ask(title: "Found Update", contents: "You have a patch update.\nCurrent Patch: " + NSSwiftUtils.readContents(of: Bundle.main.resourcePath! + "/patchd/updatedDate") + "\nLatest Patch: " + NSSwiftUtils.readContents(of: "/tmp/patchd/updatedDate") + "\n\nWould you update?\n\nVery highly recommended to update.", firstButton: "Yes", secondButton: "No") {
                     NSSwiftUtils.executeShellScript("rm", "-rf", Bundle.main.resourcePath! + "/patchd")
                     NSSwiftUtils.executeShellScript("cp", "-r", "/tmp/patchd", Bundle.main.resourcePath!)
                     Graphics.messageBox_dialogue(title: "Update Done", contents: "Patch is now up-to-date.")
@@ -304,3 +310,4 @@ class ViewController: NSViewController {
     }
 }
 
+    
